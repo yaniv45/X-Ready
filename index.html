@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>X-READY Pro - מוכנות לחירום</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Heebo', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #e0f2ff, #cce5ff);
+      color: #003366;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #0066cc;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005bb5;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .question {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="register-screen">
+    <h2>רישום רשות</h2>
+    <input type="text" placeholder="שם משתמש" id="reg-username" />
+    <input type="password" placeholder="סיסמה" id="reg-password" />
+    <button onclick="goToLogin()">המשך</button>
+  </div>
+
+  <div class="container hidden" id="login-screen">
+    <h2>התחברות</h2>
+    <input type="text" placeholder="שם משתמש" id="login-username" />
+    <input type="password" placeholder="סיסמה" id="login-password" />
+    <button onclick="goToHome()">התחבר</button>
+  </div>
+
+  <div class="container hidden" id="home-screen">
+    <h2>ברוך הבא למערכת X-READY Pro</h2>
+    <button onclick="goToSurvey()">התחל בדיקת מוכנות</button>
+  </div>
+
+  <div class="container hidden" id="survey-screen">
+    <h2>שאלון מוכנות</h2>
+
+    <div class="question">
+      <label>האם לרשות יש תוכנית חירום עדכנית?</label>
+      <select id="q1">
+        <option>כן</option>
+        <option>לא</option>
+        <option>בתהליך</option>
+      </select>
+    </div>
+
+    <div class="question">
+      <label>האם מתקיימים תרגילים שנתיים?</label>
+      <select id="q2">
+        <option>כן</option>
+        <option>לא</option>
+      </select>
+    </div>
+
+    <div class="question">
+      <label>האם קיימת מערכת התרעה דיגיטלית?</label>
+      <select id="q3">
+        <option>כן</option>
+        <option>לא</option>
+        <option>חלקית</option>
+      </select>
+    </div>
+
+    <button onclick="generatePlan()">סיום והפק תוכנית</button>
+  </div>
+
+  <div class="container hidden" id="plan-screen">
+    <h2>תוכנית שיפור אישית</h2>
+    <div id="plan-output" style="white-space: pre-line; margin-top: 20px;"></div>
+  </div>
+
+  <script>
+    function goToLogin() {
+      document.getElementById("register-screen").classList.add("hidden");
+      document.getElementById("login-screen").classList.remove("hidden");
+    }
+
+    function goToHome() {
+      document.getElementById("login-screen").classList.add("hidden");
+      document.getElementById("home-screen").classList.remove("hidden");
+    }
+
+    function goToSurvey() {
+      document.getElementById("home-screen").classList.add("hidden");
+      document.getElementById("survey-screen").classList.remove("hidden");
+    }
+
+    function generatePlan() {
+      const q1 = document.getElementById("q1").value;
+      const q2 = document.getElementById("q2").value;
+      const q3 = document.getElementById("q3").value;
+
+      let plan = "תוכנית שיפור מותאמת לרשות:\n\n";
+
+      if (q1 === "לא") plan += "- יש לגבש תוכנית חירום מיידית בשיתוף פיקוד העורף.\n";
+      else if (q1 === "בתהליך") plan += "- יש להאיץ את סיום תוכנית החירום עד סוף הרבעון.\n";
+
+      if (q2 === "לא") plan += "- מומלץ לבצע תרגיל מדמה תרחיש פעם בשנה.\n";
+
+      if (q3 === "לא") plan += "- מומלץ להטמיע מערכת התראות מבוססת SMS ואפליקציה.\n";
+      else if (q3 === "חלקית") plan += "- יש להרחיב את מערכת ההתרעה לכיסוי כלל האזורים.\n";
+
+      if (plan === "תוכנית שיפור מותאמת לרשות:\n\n") {
+        plan += "כל הכבוד! הרשות ערוכה היטב. יש להמשיך במעקב ותחזוקה שוטפת.";
+      }
+
+      document.getElementById("survey-screen").classList.add("hidden");
+      document.getElementById("plan-output").innerText = plan;
+      document.getElementById("plan-screen").classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
